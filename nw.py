@@ -5,7 +5,7 @@ def init_matrix(a, b, gap=-2):
             matrix[i][0]= i * gap
             
       for j in range(len(b)+1):
-          matrix[0][j]= j *gap
+          matrix[0][j]= j *  gap
       return matrix    
 def cell_value(a, b, matrix, i , j, match=1, mismatch=-1, gap=-2):
          if a[i-1]==b[j-1]:
@@ -18,5 +18,14 @@ def cell_value(a, b, matrix, i , j, match=1, mismatch=-1, gap=-2):
          left=matrix[i][j-1]+ gap
 
          return max(diagonal, up, left)
-m=init_matrix("GAT", "GT")
-print(cell_value("GAT", "GT", m, 1, 1))
+def fill_matrix(a, b, match=1, mismatch=-1, gap=-2):
+      matrix= init_matrix(a,b, gap)
+      for i in range (1, len(a)+1):
+            for j in range(1, len(b)+1):
+                  matrix[i][j]=cell_value(a, b, matrix, i,j, match, mismatch, gap)
+
+      return matrix
+
+
+print(fill_matrix("GAT", "GT"))
+print(fill_matrix("GAT", "GCT"))
