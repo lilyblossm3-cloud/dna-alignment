@@ -41,8 +41,14 @@ def sw_traceback(a,b, matrix, best_pos, match=1, mismatch=-1, gap=-2):
             j-=1
     return aligned_a, aligned_b
 
-matrix, best, best_pos=sw_fill("TTACG", "ACG")
-x, y=sw_traceback("TTACG", "ACG", matrix, best_pos)
-print(x)
-print(y)
+from nw import show_alignment
+
+def smith_waterman(a, b, match=1, mismatch=-1, gap=-2):
+    matrix, best, best_pos = sw_fill(a, b, match, mismatch, gap)
+    aligned_a, aligned_b = sw_traceback(a, b, matrix, best_pos, match, mismatch, gap)
+    return aligned_a, aligned_b, best
+
+if __name__ == "__main__":
+    x, y, score = smith_waterman("TTACG", "ACG")
+    show_alignment(x, y, score)
    
