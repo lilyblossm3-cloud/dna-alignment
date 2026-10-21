@@ -25,7 +25,58 @@ def fill_matrix(a, b, match=1, mismatch=-1, gap=-2):
                   matrix[i][j]=cell_value(a, b, matrix, i,j, match, mismatch, gap)
 
       return matrix
+def traceback(a, b, matrix, match=1, mismatch=-1, gap=-2):
+      i=len(a)
+      j=len(b)
+      aligned_a=""
+      aligned_b=""
 
+      while i>0 or j>0:
+            diagonal_ok=False
+            if i>0 and j>0:
+                  s=match if a[i-1]==b[j-1] else mismatch
+                  diagonal_ok= matrix[i][j]== matrix[i-1][j-1] + s
+            if diagonal_ok:
+                  aligned_a=a[i-1]+ aligned_a
+                  aligned_b=b[j-1]+ aligned_b
+                  i-=1
+                  j-=1
 
-print(fill_matrix("GAT", "GT"))
-print(fill_matrix("GAT", "GCT"))
+            elif i>0 and matrix[i][j]== matrix[i-1][j]+ gap :
+                  aligned_a=a[i-1]+ aligned_a
+                  aligned_b="-" + aligned_b
+                  i-=1
+            else:
+                  aligned_a= "-" + aligned_a
+                  aligned_b=b[j-1]+ aligned_b
+                  j-=1
+      return aligned_a, aligned_b
+
+def needleman_wunsch(a, b, match=1, mismatch=-1, gap=-2):
+      matrix= fill_matrix(a, b, match, mismatch, gap)
+      aligned_a, aligned_b= traceback(a,b, matrix, match, mismatch, gap)
+      i=len(a)
+      j=len(b)
+      score=matrix[i][j]
+      return aligned_a, aligned_b, score
+
+def show_alignment(aligned_a, aligned_b, score):
+    middle=""
+    for x, y in zip(aligned_a, aligned_b):
+       if x==y:
+           middle+="|"
+       elif x=="-" or y=="-":
+             middle +=" "
+       else:
+             middle += " "
+             
+    print(aligned_a)
+    print(middle)
+    print(aligned_b)
+    print("Score:", score)
+
+x, y, score = needleman_wunsch("GAT", "GT")
+show_alignment(x, y, score)
+
+x, y, score = needleman_wunsch("ATGCTAGC", "ATGCGAGC")
+show_alignment(x, y, score)
