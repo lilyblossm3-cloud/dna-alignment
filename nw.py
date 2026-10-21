@@ -68,15 +68,16 @@ def show_alignment(aligned_a, aligned_b, score):
        elif x=="-" or y=="-":
              middle +=" "
        else:
-             middle += " "
+             middle += "."
              
     print(aligned_a)
     print(middle)
     print(aligned_b)
     print("Score:", score)
+    
+if __name__ == "__main__":
+    x, y, score = needleman_wunsch("GAT", "GT")
+    show_alignment(x, y, score)
 
-x, y, score = needleman_wunsch("GAT", "GT")
-show_alignment(x, y, score)
-
-x, y, score = needleman_wunsch("ATGCTAGC", "ATGCGAGC")
-show_alignment(x, y, score)
+    x, y, score = needleman_wunsch("ATGCTAGC", "ATGCGAGC")
+    show_alignment(x, y, score)
